@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Construction Safety System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Existing CSS unchanged */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto Mono', monospace;
+            background-color: #181818;
+            color: #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            transition: background-color 0.3s ease;
+        }
+
+        header {
+            background-color: #2c3e50;
+            padding: 25px 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            font-size: 2.5em;
+            color: #3498db;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #ecf0f1;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        .main-content {
+            width: 95%;
+            max-width: 1200px;
+            margin: 40px auto;
+            background-color: #2c3e50;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            flex-grow: 1;
+            position: relative;
+        }
+
+        h2 {
+            font-size: 2.2em;
+            color: #3498db;
+            margin-bottom: 30px;
+            text-align: center;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 15px;
+            margin-top: 0;
+        }
+
+        .video-section,
+        .form-section {
+            margin-bottom: 40px;
+        }
+
+        #video-container {
+            background-color: #34495e;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            position: relative;
+        }
+
+        #video-feed {
+            width: 100%;
+            border-radius: 10px;
+            border: 4px solid #3498db;
+            display: block;
+            margin: 0 auto;
+            max-height: 600px;
+        }
+
+        video {
+            width: 100%;
+            margin-top: 20px;
+            border-radius: 10px;
+            border: 4px solid #3498db;
+            display: block;
+            margin: 20px auto 0;
+            max-height: 600px;
+        }
+
+        .controls {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        button,
+        input[type="file"],
+        select {
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            padding: 15px 30px;
+            margin: 10px;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            font-weight: 500;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover,
+        input[type="file"]:hover,
+        select:hover {
+            background-color: #5dade2;
+            transform: translateY(-2px);
+        }
+
+        input[type="text"] {
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #7f8c8d;
+            width: 100%;
+            max-width: 400px;
+            margin: 10px auto;
+            display: block;
+            background-color: #ecf0f1;
+            color: #2c3e50;
+            font-size: 16px;
+        }
+
+        input[type="file"] {
+            display: block;
+            margin: 20px auto;
+            padding: 15px;
+        }
+
+        select {
+            width: 100%;
+            max-width: 400px;
+            display: block;
+            margin: 10px auto;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #7f8c8d;
+            border-radius: 8px;
+            background-color: #ecf0f1;
+            color: #2c3e50;
+            appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg fill="%232c3e50" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+            background-repeat: no-repeat;
+            background-position-x: 95%;
+            background-position-y: 50%;
+        }
+
+        select::-ms-expand {
+            display: none;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            background-color: #34495e;
+            color: #ecf0f1;
+            font-size: 15px;
+            margin-top: auto;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        footer a {
+            color: #5dade2;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: #3498db;
+        }
+
+        .bottom-nav {
+            position: absolute;
+            bottom: 20px;
+            right: 30px;
+        }
+
+        .bottom-nav a {
+            color: #ecf0f1;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            background-color: #3498db;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            font-size: 16px;
+            font-weight: 500;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .bottom-nav a:hover {
+            background-color: #5dade2;
+            color: #fff;
+        }
+
+        .alert {
+            display: none;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #2c3e50;
+            color: #e74c3c;
+            padding: 15px 20px;
+            border-radius: 8px;
+            border: 2px solid #3498db;
+            font-size: 16px;
+            font-weight: 500;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .alert.show {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Toggle Switch Styling */
+        .toggle-switch {
+            display: inline-block;
+            position: relative;
+            width: 60px;
+            height: 34px;
+            margin: 10px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #7f8c8d;
+            transition: 0.3s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: #ecf0f1;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #3498db;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .toggle-label {
+            margin-left: 10px;
+            font-size: 16px;
+            vertical-align: middle;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 20px;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .bottom-nav {
+                position: static;
+                margin-top: 15px;
+                bottom: auto;
+                right: auto;
+                left: auto;
+            }
+
+            .bottom-nav a {
+                display: block;
+                margin: 10px 0;
+            }
+
+            .logo-container {
+                margin-bottom: 10px;
+            }
+
+            .logo-icon {
+                font-size: 2em;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .main-content {
+                width: 98%;
+                padding: 30px;
+                margin-top: 30px;
+                margin-bottom: 30px;
+            }
+
+            h2 {
+                font-size: 1.8em;
+                margin-bottom: 25px;
+                padding-bottom: 10px;
+            }
+
+            button,
+            input[type="file"],
+            select {
+                padding: 12px 25px;
+                font-size: 15px;
+                margin: 8px;
+            }
+
+            input[type="text"] {
+                max-width: 100%;
+            }
+
+            select {
+                max-width: 100%;
+            }
+
+            .alert {
+                top: 10px;
+                left: 10px;
+                right: 10px;
+                font-size: 14px;
+                padding: 10px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <i class="fa-solid fa-helmet-safety logo-icon"></i>
+            <h1>Construction Safety AI</h1>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="bottom-nav">
+            <a href="/about"><i class="fa-solid fa-info-circle"></i> About</a>
+        </div>
+
+        <section class="video-section">
+            <h2><i class="fa-solid fa-video"></i> Live Detection</h2>
+            <div id="video-container">
+                <div id="violation-alert" class="alert">
+                    <i class="fa-solid fa-exclamation-triangle"></i> PPE Violation Detected: Missing Hardhat, Mask, or Safety Vest
+                </div>
+                <img id="video-feed" src="{{ url_for('video_feed') }}" alt="Live Stream"/>
+            </div>
+            <div class="controls">
+                <label class="toggle-switch">
+                    <input type="checkbox" id="webcam-toggle">
+                    <span class="slider"></span>
+                </label>
+                <span class="toggle-label">Webcam: <span id="toggle-status">Off</span></span>
+            </div>
+        </section>
+
+        <section class="form-section">
+            <h2><i class="fa-solid fa-upload"></i> Choose Video Source</h2>
+            <form id="source-form" action="/change_source" method="post" enctype="multipart/form-data">
+                <select name="source_type" id="source-select">
+                    <option value="webcam">Webcam</option>
+                    <option value="cctv">CCTV Stream</option>
+                    <option value="uploaded">Upload Video</option>
+                </select>
+                <input type="text" name="cctv_url" placeholder="Enter CCTV Stream URL" style="display: none;">
+                <input type="file" name="video" accept="video/*" style="display: none;">
+                <button type="submit"><i class="fa-solid fa-check-circle"></i> Apply Source</button>
+            </form>
+        </section>
+
+        <section class="form-section">
+            <h2><i class="fa-solid fa-play-circle"></i> Video Playback</h2>
+            <div class="video-player">
+                <video id="uploaded-video" controls>
+                    <source src="" id="video-source">
+                    Your browser does not support video playback.
+                </video>
+                <div class="controls">
+                    <button onclick="playPause()"><i class="fa-solid fa-play-pause"></i> Play/Pause</button>
+                    <button onclick="rewind()"><i class="fa-solid fa-backward"></i> Rewind</button>
+                    <button onclick="fastForward()"><i class="fa-solid fa-forward"></i> Fast Forward</button>
+                    <button onclick="slowDown()"><i class="fa-solid fa-turtle"></i> Slow Down</button>
+                    <button onclick="speedUp()"><i class="fa-solid fa-rabbit"></i> Speed Up</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2025 Construction Safety AI | Powered by Ultralytics & Flask | Developed with <i class="fa-solid fa-heart" style="color: #e74c3c;"></i></p>
+    </footer>
+
+    <script>
+        // Toggle Webcam
+        const toggle = document.getElementById('webcam-toggle');
+        const toggleStatus = document.getElementById('toggle-status');
+        const videoFeed = document.getElementById('video-feed');
+
+        toggle.addEventListener('change', async () => {
+            const active = toggle.checked;
+            toggleStatus.textContent = active ? 'On' : 'Off';
+            try {
+                const response = await fetch('/toggle_webcam', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ active })
+                });
+                const data = await response.json();
+                if (data.status === 'success') {
+                    // Refresh video feed
+                    videoFeed.src = '{{ url_for('video_feed') }}?' + new Date().getTime(); // Add timestamp to force reload
+                }
+            } catch (error) {
+                console.error('Error toggling webcam:', error);
+                toggle.checked = !active; // Revert toggle on error
+                toggleStatus.textContent = active ? 'Off' : 'On';
+            }
+        });
+
+        // Source Form Handling
+        const sourceForm = document.getElementById('source-form');
+        const sourceSelect = document.getElementById('source-select');
+        const cctvInput = document.querySelector('input[name="cctv_url"]');
+        const videoInput = document.querySelector('input[name="video"]');
+
+        sourceSelect.addEventListener('change', () => {
+            cctvInput.style.display = sourceSelect.value === 'cctv' ? 'block' : 'none';
+            videoInput.style.display = sourceSelect.value === 'uploaded' ? 'block' : 'none';
+            if (sourceSelect.value === 'webcam') {
+                toggle.checked = false; // Reset toggle when switching to webcam
+                toggleStatus.textContent = 'Off';
+                fetch('/toggle_webcam', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ active: false })
+                });
+            }
+        });
+
+        sourceForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(sourceForm);
+            const sourceType = formData.get('source_type');
+            const url = sourceType === 'uploaded' ? '/upload' : '/change_source';
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    body: formData
+                });
+                if (response.ok && sourceType === 'uploaded') {
+                    // Update video player source after upload
+                    const videoSource = document.getElementById('video-source');
+                    const publicUrl = await response.text(); // Assuming backend returns URL
+                    videoSource.src = publicUrl;
+                    document.getElementById('uploaded-video').load();
+                }
+                window.location.reload(); // Reload to reflect source change
+            } catch (error) {
+                console.error('Error changing source:', error);
+            }
+        });
+
+        // Video Playback Controls
+        function playPause() {
+            const video = document.getElementById('uploaded-video');
+            video.paused ? video.play() : video.pause();
+        }
+
+        function rewind() {
+            document.getElementById('uploaded-video').currentTime -= 5;
+        }
+
+        function fastForward() {
+            document.getElementById('uploaded-video').currentTime += 5;
+        }
+
+        function slowDown() {
+            const video = document.getElementById('uploaded-video');
+            video.playbackRate = Math.max(0.25, video.playbackRate - 0.25);
+        }
+
+        function speedUp() {
+            const video = document.getElementById('uploaded-video');
+            video.playbackRate += 0.25;
+        }
+
+        // Poll Violation Status
+        function checkViolationStatus() {
+            fetch('/violation_status')
+                .then(response => response.json())
+                .then(data => {
+                    const alert = document.getElementById('violation-alert');
+                    if (data.violation) {
+                        alert.classList.add('show');
+                    } else {
+                        alert.classList.remove('show');
+                    }
+                })
+                .catch(error => console.error('Error fetching violation status:', error));
+        }
+
+        setInterval(checkViolationStatus, 1000); // Reduced to 1 second for faster updates
+    </script>
+</body>
+</html>

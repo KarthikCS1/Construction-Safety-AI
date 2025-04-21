@@ -1,0 +1,25 @@
+# Sensitive files
+credentials.json
+token.pickle
+service-account-key.json
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+*.egg-info/
+
+# Local uploads
+uploads/
+
+# IDE and OS files
+.vscode/
+.idea/
+*.DS_Store
+
+# Google Cloud ignore (optional, already in .gcloudignore)
+.gcloudignore
