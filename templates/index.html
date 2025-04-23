@@ -6,9 +6,9 @@
     <title>Construction Safety System</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Existing CSS unchanged */
+        /* Refined CSS */
         * {
             margin: 0;
             padding: 0;
@@ -16,19 +16,20 @@
         }
 
         body {
-            font-family: 'Roboto Mono', monospace;
-            background-color: #181818;
+            font-family: 'Inter', sans-serif;
+            background-color: #212121;
             color: #e0e0e0;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
             transition: background-color 0.3s ease;
+            line-height: 1.6;
         }
 
         header {
-            background-color: #2c3e50;
-            padding: 25px 30px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            background-color: #2f4356;
+            padding: 30px 35px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.25);
             display: flex;
             align-items: center;
         }
@@ -36,60 +37,69 @@
         .logo-container {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 18px;
         }
 
         .logo-icon {
-            font-size: 2.5em;
+            font-size: 2.8em;
             color: #3498db;
         }
 
         h1 {
-            font-size: 2.5em;
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.8em;
             color: #ecf0f1;
             margin: 0;
-            font-weight: 500;
+            font-weight: 600;
         }
 
         .main-content {
             width: 95%;
             max-width: 1200px;
-            margin: 40px auto;
-            background-color: #2c3e50;
-            border-radius: 15px;
-            padding: 40px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            margin: 50px auto;
+            background-color: #2f4356;
+            border-radius: 20px;
+            padding: 50px;
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.35);
             flex-grow: 1;
             position: relative;
         }
 
         h2 {
-            font-size: 2.2em;
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.4em;
             color: #3498db;
-            margin-bottom: 30px;
+            margin-bottom: 35px;
             text-align: center;
             border-bottom: 2px solid #3498db;
-            padding-bottom: 15px;
+            padding-bottom: 18px;
             margin-top: 0;
+            font-weight: 600;
+        }
+
+        h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.6em;
+            font-weight: 500;
         }
 
         .video-section,
         .form-section {
-            margin-bottom: 40px;
+            margin-bottom: 50px;
         }
 
         #video-container {
             background-color: #34495e;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
             text-align: center;
             position: relative;
         }
 
         #video-feed {
             width: 100%;
-            border-radius: 10px;
+            border-radius: 12px;
             border: 4px solid #3498db;
             display: block;
             margin: 0 auto;
@@ -98,17 +108,17 @@
 
         video {
             width: 100%;
-            margin-top: 20px;
-            border-radius: 10px;
+            margin-top: 25px;
+            border-radius: 12px;
             border: 4px solid #3498db;
             display: block;
-            margin: 20px auto 0;
+            margin: 25px auto 0;
             max-height: 600px;
         }
 
         .controls {
             text-align: center;
-            margin-top: 30px;
+            margin-top: 35px;
         }
 
         button,
@@ -117,14 +127,15 @@
             background-color: #3498db;
             color: #fff;
             border: none;
-            padding: 15px 30px;
-            margin: 10px;
-            border-radius: 10px;
+            padding: 15px 35px;
+            margin: 12px;
+            border-radius: 12px;
             font-size: 16px;
+            font-family: 'Inter', sans-serif;
             cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
             font-weight: 500;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
         }
 
         button:hover,
@@ -132,40 +143,43 @@
         select:hover {
             background-color: #5dade2;
             transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2);
         }
 
         input[type="text"] {
-            padding: 12px;
-            border-radius: 8px;
+            padding: 14px;
+            border-radius: 10px;
             border: 1px solid #7f8c8d;
             width: 100%;
-            max-width: 400px;
-            margin: 10px auto;
+            max-width: 450px;
+            margin: 12px auto;
             display: block;
             background-color: #ecf0f1;
-            color: #2c3e50;
+            color: #2f4356;
             font-size: 16px;
+            font-family: 'Inter', sans-serif;
         }
 
         input[type="file"] {
             display: block;
-            margin: 20px auto;
+            margin: 25px auto;
             padding: 15px;
         }
 
         select {
             width: 100%;
-            max-width: 400px;
+            max-width: 450px;
             display: block;
-            margin: 10px auto;
-            padding: 12px;
+            margin: 12px auto;
+            padding: 14px;
             font-size: 16px;
             border: 1px solid #7f8c8d;
-            border-radius: 8px;
+            border-radius: 10px;
             background-color: #ecf0f1;
-            color: #2c3e50;
+            color: #2f4356;
+            font-family: 'Inter', sans-serif;
             appearance: none;
-            background-image: url('data:image/svg+xml;utf8,<svg fill="%232c3e50" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+            background-image: url('data:image/svg+xml;utf8,<svg fill="%232f4356" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
             background-repeat: no-repeat;
             background-position-x: 95%;
             background-position-y: 50%;
@@ -177,12 +191,12 @@
 
         footer {
             text-align: center;
-            padding: 25px;
+            padding: 30px;
             background-color: #34495e;
             color: #ecf0f1;
-            font-size: 15px;
+            font-size: 16px;
             margin-top: auto;
-            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 -3px 8px rgba(0, 0, 0, 0.15);
         }
 
         footer a {
@@ -197,40 +211,43 @@
 
         .bottom-nav {
             position: absolute;
-            bottom: 20px;
-            right: 30px;
+            bottom: 25px;
+            right: 35px;
         }
 
         .bottom-nav a {
             color: #ecf0f1;
             text-decoration: none;
-            padding: 10px 15px;
-            border-radius: 8px;
+            padding: 12px 18px;
+            border-radius: 10px;
             background-color: #3498db;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
             font-size: 16px;
+            font-family: 'Inter', sans-serif;
             font-weight: 500;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
         }
 
         .bottom-nav a:hover {
             background-color: #5dade2;
             color: #fff;
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2);
         }
 
         .alert {
             display: none;
             position: absolute;
-            top: 20px;
-            left: 20px;
-            background-color: #2c3e50;
-            color: #e74c3c;
-            padding: 15px 20px;
-            border-radius: 8px;
+            top: 25px;
+            left: 25px;
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: #fff;
+            padding: 18px 25px;
+            border-radius: 10px;
             border: 2px solid #3498db;
             font-size: 16px;
+            font-family: 'Inter', sans-serif;
             font-weight: 500;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.3);
             z-index: 1000;
             opacity: 0;
             transition: opacity 0.3s ease;
@@ -247,7 +264,7 @@
             position: relative;
             width: 60px;
             height: 34px;
-            margin: 10px;
+            margin: 12px;
         }
 
         .toggle-switch input {
@@ -289,14 +306,15 @@
         }
 
         .toggle-label {
-            margin-left: 10px;
+            margin-left: 12px;
             font-size: 16px;
             vertical-align: middle;
+            font-family: 'Inter', sans-serif;
         }
 
         @media (max-width: 768px) {
             header {
-                padding: 20px;
+                padding: 25px;
                 flex-direction: column;
                 align-items: center;
                 text-align: center;
@@ -304,7 +322,7 @@
 
             .bottom-nav {
                 position: static;
-                margin-top: 15px;
+                margin-top: 20px;
                 bottom: auto;
                 right: auto;
                 left: auto;
@@ -312,40 +330,40 @@
 
             .bottom-nav a {
                 display: block;
-                margin: 10px 0;
+                margin: 12px 0;
             }
 
             .logo-container {
-                margin-bottom: 10px;
+                margin-bottom: 12px;
             }
 
             .logo-icon {
-                font-size: 2em;
+                font-size: 2.2em;
             }
 
             h1 {
-                font-size: 2em;
+                font-size: 2.2em;
             }
 
             .main-content {
                 width: 98%;
-                padding: 30px;
-                margin-top: 30px;
-                margin-bottom: 30px;
+                padding: 35px;
+                margin-top: 35px;
+                margin-bottom: 35px;
             }
 
             h2 {
-                font-size: 1.8em;
-                margin-bottom: 25px;
-                padding-bottom: 10px;
+                font-size: 2em;
+                margin-bottom: 30px;
+                padding-bottom: 12px;
             }
 
             button,
             input[type="file"],
             select {
-                padding: 12px 25px;
+                padding: 12px 30px;
                 font-size: 15px;
-                margin: 8px;
+                margin: 10px;
             }
 
             input[type="text"] {
@@ -357,12 +375,21 @@
             }
 
             .alert {
-                top: 10px;
-                left: 10px;
-                right: 10px;
-                font-size: 14px;
-                padding: 10px 15px;
+                top: 12px;
+                left: 12px;
+                right: 12px;
+                font-size: 15px;
+                padding: 12px 18px;
             }
+        }
+
+        /* Added for upload status */
+        #upload-status {
+            color: #3498db;
+            margin-top: 12px;
+            font-size: 16px;
+            text-align: center;
+            font-family: 'Inter', sans-serif;
         }
     </style>
 </head>
@@ -389,42 +416,26 @@
             </div>
             <div class="controls">
                 <label class="toggle-switch">
-                    <input type="checkbox" id="webcam-toggle">
+                    <input type="checkbox" id="webcam-toggle" {% if webcam_active %}checked{% endif %}>
                     <span class="slider"></span>
                 </label>
-                <span class="toggle-label">Webcam: <span id="toggle-status">Off</span></span>
+                <span class="toggle-label">Webcam: <span id="toggle-status">{{ 'On' if webcam_active else 'Off' }}</span></span>
             </div>
         </section>
 
         <section class="form-section">
             <h2><i class="fa-solid fa-upload"></i> Choose Video Source</h2>
-            <form id="source-form" action="/change_source" method="post" enctype="multipart/form-data">
+            <form id="source-form" enctype="multipart/form-data">
                 <select name="source_type" id="source-select">
-                    <option value="webcam">Webcam</option>
-                    <option value="cctv">CCTV Stream</option>
-                    <option value="uploaded">Upload Video</option>
+                    <option value="webcam" {% if current_source_type == 'webcam' %}selected{% endif %}>Webcam</option>
+                    <option value="cctv" {% if current_source_type == 'cctv' %}selected{% endif %}>CCTV Stream</option>
+                    <option value="uploaded" {% if current_source_type == 'uploaded' %}selected{% endif %}>Upload Video</option>
                 </select>
-                <input type="text" name="cctv_url" placeholder="Enter CCTV Stream URL" style="display: none;">
-                <input type="file" name="video" accept="video/*" style="display: none;">
+                <input type="text" name="cctv_url" placeholder="Enter CCTV Stream URL" style="display: {% if current_source_type == 'cctv' %}block{% else %}none{% endif %};" value="{{ video_source if current_source_type == 'cctv' else '' }}">
+                <input type="file" name="video" accept="video/mp4,video/avi,video/mov" style="display: {% if current_source_type == 'uploaded' %}block{% else %}none{% endif %};">
                 <button type="submit"><i class="fa-solid fa-check-circle"></i> Apply Source</button>
+                <p id="upload-status"></p>
             </form>
-        </section>
-
-        <section class="form-section">
-            <h2><i class="fa-solid fa-play-circle"></i> Video Playback</h2>
-            <div class="video-player">
-                <video id="uploaded-video" controls>
-                    <source src="" id="video-source">
-                    Your browser does not support video playback.
-                </video>
-                <div class="controls">
-                    <button onclick="playPause()"><i class="fa-solid fa-play-pause"></i> Play/Pause</button>
-                    <button onclick="rewind()"><i class="fa-solid fa-backward"></i> Rewind</button>
-                    <button onclick="fastForward()"><i class="fa-solid fa-forward"></i> Fast Forward</button>
-                    <button onclick="slowDown()"><i class="fa-solid fa-turtle"></i> Slow Down</button>
-                    <button onclick="speedUp()"><i class="fa-solid fa-rabbit"></i> Speed Up</button>
-                </div>
-            </div>
         </section>
     </main>
 
@@ -437,6 +448,11 @@
         const toggle = document.getElementById('webcam-toggle');
         const toggleStatus = document.getElementById('toggle-status');
         const videoFeed = document.getElementById('video-feed');
+        const sourceForm = document.getElementById('source-form');
+        const sourceSelect = document.getElementById('source-select');
+        const cctvInput = document.querySelector('input[name="cctv_url"]');
+        const videoInput = document.querySelector('input[name="video"]');
+        const uploadStatus = document.getElementById('upload-status');
 
         toggle.addEventListener('change', async () => {
             const active = toggle.checked;
@@ -449,27 +465,28 @@
                 });
                 const data = await response.json();
                 if (data.status === 'success') {
-                    // Refresh video feed
-                    videoFeed.src = '{{ url_for('video_feed') }}?' + new Date().getTime(); // Add timestamp to force reload
+                    videoFeed.src = '{{ url_for('video_feed') }}?' + new Date().getTime();
+                } else {
+                    toggle.checked = !active;
+                    toggleStatus.textContent = active ? 'Off' : 'On';
+                    uploadStatus.textContent = `Error: ${data.message}`;
+                    uploadStatus.style.color = '#e74c3c';
                 }
             } catch (error) {
                 console.error('Error toggling webcam:', error);
-                toggle.checked = !active; // Revert toggle on error
+                toggle.checked = !active;
                 toggleStatus.textContent = active ? 'Off' : 'On';
+                uploadStatus.textContent = 'Error toggling webcam';
+                uploadStatus.style.color = '#e74c3c';
             }
         });
 
         // Source Form Handling
-        const sourceForm = document.getElementById('source-form');
-        const sourceSelect = document.getElementById('source-select');
-        const cctvInput = document.querySelector('input[name="cctv_url"]');
-        const videoInput = document.querySelector('input[name="video"]');
-
         sourceSelect.addEventListener('change', () => {
             cctvInput.style.display = sourceSelect.value === 'cctv' ? 'block' : 'none';
             videoInput.style.display = sourceSelect.value === 'uploaded' ? 'block' : 'none';
             if (sourceSelect.value === 'webcam') {
-                toggle.checked = false; // Reset toggle when switching to webcam
+                toggle.checked = false;
                 toggleStatus.textContent = 'Off';
                 fetch('/toggle_webcam', {
                     method: 'POST',
@@ -477,6 +494,7 @@
                     body: JSON.stringify({ active: false })
                 });
             }
+            uploadStatus.textContent = '';
         });
 
         sourceForm.addEventListener('submit', async (e) => {
@@ -484,47 +502,30 @@
             const formData = new FormData(sourceForm);
             const sourceType = formData.get('source_type');
             const url = sourceType === 'uploaded' ? '/upload' : '/change_source';
+            uploadStatus.textContent = sourceType === 'uploaded' ? 'Uploading...' : 'Changing source...';
+            uploadStatus.style.color = '#3498db';
+
             try {
                 const response = await fetch(url, {
                     method: 'POST',
                     body: formData
                 });
-                if (response.ok && sourceType === 'uploaded') {
-                    // Update video player source after upload
-                    const videoSource = document.getElementById('video-source');
-                    const publicUrl = await response.text(); // Assuming backend returns URL
-                    videoSource.src = publicUrl;
-                    document.getElementById('uploaded-video').load();
+                const data = await response.json();
+                if (data.status === 'success') {
+                    uploadStatus.textContent = sourceType === 'uploaded' ? 'Video uploaded successfully!' : 'Source changed successfully!';
+                    uploadStatus.style.color = '#2ecc71';
+                    videoFeed.src = '{{ url_for('video_feed') }}?' + new Date().getTime();
+                    setTimeout(() => window.location.reload(), 1000);
+                } else {
+                    uploadStatus.textContent = `Error: ${data.message}`;
+                    uploadStatus.style.color = '#e74c3c';
                 }
-                window.location.reload(); // Reload to reflect source change
             } catch (error) {
-                console.error('Error changing source:', error);
+                console.error('Error processing request:', error);
+                uploadStatus.textContent = `Error: ${error.message}`;
+                uploadStatus.style.color = '#e74c3c';
             }
         });
-
-        // Video Playback Controls
-        function playPause() {
-            const video = document.getElementById('uploaded-video');
-            video.paused ? video.play() : video.pause();
-        }
-
-        function rewind() {
-            document.getElementById('uploaded-video').currentTime -= 5;
-        }
-
-        function fastForward() {
-            document.getElementById('uploaded-video').currentTime += 5;
-        }
-
-        function slowDown() {
-            const video = document.getElementById('uploaded-video');
-            video.playbackRate = Math.max(0.25, video.playbackRate - 0.25);
-        }
-
-        function speedUp() {
-            const video = document.getElementById('uploaded-video');
-            video.playbackRate += 0.25;
-        }
 
         // Poll Violation Status
         function checkViolationStatus() {
@@ -541,7 +542,13 @@
                 .catch(error => console.error('Error fetching violation status:', error));
         }
 
-        setInterval(checkViolationStatus, 1000); // Reduced to 1 second for faster updates
+        setInterval(checkViolationStatus, 1000);
+
+        // Initialize form display
+        window.onload = () => {
+            cctvInput.style.display = '{{ current_source_type }}' === 'cctv' ? 'block' : 'none';
+            videoInput.style.display = '{{ current_source_type }}' === 'uploaded' ? 'block' : 'none';
+        };
     </script>
 </body>
 </html>

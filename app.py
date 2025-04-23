@@ -6,11 +6,8 @@ import pickle
 import numpy as np
 import logging
 import uuid
-from flask import Flask, render_template, Response, request, redirect, url_for, jsonify
+from flask import Flask, render_template, Response, request, jsonify
 from ultralytics import YOLO
-from google.cloud import storage
-from google.cloud.storage.retry import DEFAULT_RETRY
-from google.cloud.exceptions import NotFound
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
@@ -24,44 +21,11 @@ app = Flask(__name__)
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s: %(message)s')
 logger = logging.getLogger(__name__)
 
-# Google Cloud Storage setup
-try:
-    if os.getenv('CLOUD_RUN', False):
-        storage_client = storage.Client()
-    else:
-        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "service-account-key.json"
-        storage_client = storage.Client()
-    bucket_name = "ppe-detection-uploads"
-    bucket = storage_client.bucket(bucket_name)
-    token_blob = bucket.blob("tokens/token.pickle")
-    logger.info(f"✅ Configured Google Cloud Storage Bucket: {bucket_name}")
-except Exception as e:
-    logger.error(f"❌ Failed to initialize Google Cloud Storage: {e}")
-    raise
-
-# Download token.pickle from GCS
-def download_token_from_gcs():
-    try:
-        if token_blob.exists():
-            token_blob.download_to_filename('token.pickle')
-            logger.info("✅ Downloaded token.pickle from GCS")
-        else:
-            logger.error("❌ token.pickle not found in GCS")
-            raise Exception("token.pickle not found in GCS")
-    except Exception as e:
-        logger.error(f"❌ Failed to download token.pickle from GCS: {e}")
-        raise
-
-# Upload token.pickle to GCS
-def upload_token_to_gcs():
-    try:
-        if os.path.exists('token.pickle'):
-            token_blob.upload_from_filename('token.pickle', retry=DEFAULT_RETRY)
-            logger.info("✅ Uploaded refreshed token.pickle to GCS")
-        else:
-            logger.error("❌ token.pickle not found locally for upload")
-    except Exception as e:
-        logger.error(f"❌ Failed to upload token.pickle to GCS: {e}")
+# Create uploads directory
+UPLOAD_FOLDER = 'uploads'
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # Gmail API setup
 SCOPES = ['https://www.googleapis.com/auth/gmail.send']
@@ -69,13 +33,11 @@ def get_gmail_service():
     try:
         creds = None
         token_path = 'token.pickle'
-        if os.getenv('CLOUD_RUN', False):
-            download_token_from_gcs()
         if os.path.exists(token_path):
             with open(token_path, 'rb') as token:
                 creds = pickle.load(token)
         else:
-            logger.error(f"❌ {token_path} not found. Ensure token is in GCS or run generate_token.py locally.")
+            logger.error(f"❌ {token_path} not found. Run generate_token.py to create it.")
             raise Exception(f"{token_path} not found")
 
         if creds and creds.valid:
@@ -85,11 +47,9 @@ def get_gmail_service():
             creds.refresh(Request())
             with open(token_path, 'wb') as token:
                 pickle.dump(creds, token)
-            if os.getenv('CLOUD_RUN', False):
-                upload_token_to_gcs()
             logger.info("✅ Credentials refreshed and saved")
         else:
-            logger.error("❌ No valid credentials or refresh token. Regenerate token.pickle locally and upload to GCS.")
+            logger.error("❌ No valid credentials or refresh token. Regenerate token.pickle.")
             raise Exception("No valid credentials or refresh token")
 
         service = build('gmail', 'v1', credentials=creds)
@@ -115,6 +75,18 @@ def send_email(subject, body, to_email):
     except Exception as e:
         logger.error(f"❌ Email sending failed to {to_email}: {e}", exc_info=True)
         return False
+
+# Generate token.pickle (run once locally if needed)
+def generate_token():
+    try:
+        flow = InstalledAppFlow.from_client_secrets_file('credentials.json', SCOPES)
+        creds = flow.run_local_server(port=0)
+        with open('token.pickle', 'wb') as token:
+            pickle.dump(creds, token)
+        logger.info("✅ Generated token.pickle")
+    except Exception as e:
+        logger.error(f"❌ Failed to generate token.pickle: {e}")
+        raise
 
 # Load YOLO Model
 MODEL_PATH = "model/best.pt"
@@ -208,13 +180,13 @@ def generate_frames():
             time.sleep(0.5)
             continue
 
-        if cap is None or not cap.isOpened():
-            if video_source is None:
-                logger.info("No video source set. Yielding placeholder.")
-                yield get_placeholder_frame_bytes()
-                time.sleep(0.5)
-                continue
+        if video_source is None:
+            logger.info("No video source set. Yielding placeholder.")
+            yield get_placeholder_frame_bytes()
+            time.sleep(0.5)
+            continue
 
+        if cap is None or not cap.isOpened():
             try:
                 logger.info(f"Attempting to open video source: {video_source}")
                 cap = cv2.VideoCapture(video_source, cv2.CAP_FFMPEG if isinstance(video_source, str) else None)
@@ -237,41 +209,37 @@ def generate_frames():
                 time.sleep(1)
                 continue
 
-        if cap and cap.isOpened():
-            success, frame = cap.read()
-            if not success:
-                logger.warning(f"End of video stream or cannot read frame from source: {video_source}")
-                if current_source_type != 'webcam':
-                    logger.info(f"Source {video_source} finished or disconnected. Releasing capture.")
-                    cap.release()
-                    cap = None
-                    yield get_placeholder_frame_bytes()
-                    break
-                else:
-                    logger.info("Webcam stream failed. Will attempt to reopen.")
-                    cap.release()
-                    cap = None
-                    yield get_placeholder_frame_bytes()
-                    time.sleep(0.5)
-                    continue
-
-            processed_frame = detect_ppe(frame)
-            try:
-                ret, buffer = cv2.imencode('.jpg', processed_frame)
-                if ret:
-                    frame_bytes = buffer.tobytes()
-                    yield (b'--frame\r\n'
-                           b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
-                else:
-                    logger.warning("Error encoding frame to JPEG")
-            except Exception as e:
-                logger.error(f"Exception during frame encoding: {e}")
+        success, frame = cap.read()
+        if not success:
+            logger.warning(f"End of video stream or cannot read frame from source: {video_source}")
+            if current_source_type != 'webcam':
+                logger.info(f"Source {video_source} finished or disconnected. Releasing capture.")
+                cap.release()
+                cap = None
+                yield get_placeholder_frame_bytes()
                 break
+            else:
+                logger.info("Webcam stream failed. Will attempt to reopen.")
+                cap.release()
+                cap = None
+                yield get_placeholder_frame_bytes()
+                time.sleep(0.5)
+                continue
 
-        else:
-            logger.info("No capture device available. Yielding placeholder.")
-            yield get_placeholder_frame_bytes()
-            time.sleep(0.5)
+        processed_frame = detect_ppe(frame)
+        try:
+            ret, buffer = cv2.imencode('.jpg', processed_frame)
+            if ret:
+                frame_bytes = buffer.tobytes()
+                yield (b'--frame\r\n'
+                       b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
+            else:
+                logger.warning("Error encoding frame to JPEG")
+        except Exception as e:
+            logger.error(f"Exception during frame encoding: {e}")
+            break
+
+        time.sleep(0.033)  # Approximate 30 FPS
 
     if cap and cap.isOpened():
         cap.release()
@@ -333,7 +301,7 @@ def refresh_token():
             return jsonify({'status': 'success', 'message': 'Token is valid'})
         else:
             logger.error("Token is invalid or could not be refreshed")
-            return jsonify({'status': 'error', 'message': 'Token is invalid. Regenerate token.pickle locally and upload to GCS.'}), 500
+            return jsonify({'status': 'error', 'message': 'Token is invalid. Regenerate token.pickle.'}), 500
     except Exception as e:
         logger.error(f"Error checking token: {e}", exc_info=True)
         return jsonify({'status': 'error', 'message': f'Error checking token: {e}'}), 500
@@ -346,6 +314,11 @@ def index():
                            webcam_active=webcam_active,
                            video_source=video_source if isinstance(video_source, str) else '')
 
+# About Route (Placeholder)
+@app.route('/about')
+def about():
+    return render_template('about.html')  # Create about.html or redirect to index
+
 # Video Feed Route
 @app.route('/video_feed')
 def video_feed():
@@ -357,31 +330,49 @@ def upload_video():
     global video_source, current_source_type, webcam_active
     if 'video' not in request.files:
         logger.error("Upload failed: No file part in request")
-        return "No file part", 400
+        return jsonify({'status': 'error', 'message': 'No file part in request'}), 400
     file = request.files['video']
     if file.filename == '':
         logger.error("Upload failed: No selected file")
-        return "No selected file", 400
-    if file:
-        original_filename = file.filename
-        file_extension = os.path.splitext(original_filename)[1]
-        unique_filename = f"{uuid.uuid4()}{file_extension}"
-        logger.info(f"Uploading file: {original_filename} as {unique_filename}")
-        try:
-            blob = bucket.blob(f"uploads/{unique_filename}")
-            blob.upload_from_file(file, retry=DEFAULT_RETRY)
-            blob.make_public()
-            public_url = blob.public_url
-            logger.info(f"File uploaded to GCS: {public_url}")
-            video_source = public_url
-            current_source_type = 'uploaded'
-            webcam_active = False
-            logger.info(f"Source changed to Uploaded Video: {video_source}")
-            return redirect(url_for('index'))
-        except Exception as e:
-            logger.error(f"Error uploading file {unique_filename} to GCS: {e}")
-            return f"Error uploading file: {e}", 500
-    return "Upload failed", 400
+        return jsonify({'status': 'error', 'message': 'No selected file'}), 400
+    if not file or not allowed_file(file.filename):
+        logger.error(f"Upload failed: Invalid file type for {file.filename}")
+        return jsonify({'status': 'error', 'message': 'Invalid file type. Allowed: mp4, avi, mov'}), 400
+
+    original_filename = file.filename
+    file_extension = os.path.splitext(original_filename)[1].lower()
+    unique_filename = f"{uuid.uuid4()}{file_extension}"
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], unique_filename)
+    logger.info(f"Uploading file: {original_filename} as {unique_filename}")
+
+    try:
+        file.save(file_path)
+        file_size = os.path.getsize(file_path) / (1024 * 1024)  # Size in MB
+        logger.info(f"File saved locally: {file_path}, Size: {file_size:.2f} MB")
+
+        # Verify video file
+        cap = cv2.VideoCapture(file_path)
+        if not cap.isOpened():
+            logger.error(f"Invalid video file: {unique_filename}")
+            os.remove(file_path)
+            return jsonify({'status': 'error', 'message': 'Invalid video file'}), 400
+        cap.release()
+
+        video_source = file_path
+        current_source_type = 'uploaded'
+        webcam_active = False
+        logger.info(f"Source changed to Uploaded Video: {video_source}")
+        return jsonify({'status': 'success', 'message': 'Video uploaded successfully', 'url': file_path})
+    except Exception as e:
+        logger.error(f"Error saving file {unique_filename}: {e}", exc_info=True)
+        if os.path.exists(file_path):
+            os.remove(file_path)
+        return jsonify({'status': 'error', 'message': f'Error uploading file: {str(e)}'}), 500
+
+# Helper function for allowed file types
+def allowed_file(filename):
+    ALLOWED_EXTENSIONS = {'mp4', 'avi', 'mov'}
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # Change Source Route
 @app.route('/change_source', methods=['POST'])
@@ -392,6 +383,7 @@ def change_source():
     if source_type == 'webcam':
         video_source = 0
         current_source_type = 'webcam'
+        webcam_active = False  # Reset webcam to off
         logger.info(f"Source changed to Webcam ({video_source}). Webcam active state: {webcam_active}")
     elif source_type == 'cctv':
         cctv_url = request.form.get('cctv_url')
@@ -402,10 +394,11 @@ def change_source():
             logger.info(f"Source changed to CCTV: {video_source}")
         else:
             logger.error("CCTV source selected but URL is missing")
-            return "CCTV URL cannot be empty", 400
+            return jsonify({'status': 'error', 'message': 'CCTV URL cannot be empty'}), 400
     elif source_type == 'uploaded':
         logger.info("'uploaded' source type selected - requires file upload via /upload route")
-    return redirect(url_for('index'))
+        return jsonify({'status': 'error', 'message': 'Please upload a video first'}), 400
+    return jsonify({'status': 'success', 'message': 'Source changed'})
 
 # Main Execution Block
 if __name__ == '__main__':
