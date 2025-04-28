@@ -7,391 +7,6 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
-    <style>
-        /* Refined CSS */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #212121;
-            color: #e0e0e0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            transition: background-color 0.3s ease;
-            line-height: 1.6;
-        }
-
-        header {
-            background-color: #2f4356;
-            padding: 30px 35px;
-            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.25);
-            display: flex;
-            align-items: center;
-        }
-
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 18px;
-        }
-
-        .logo-icon {
-            font-size: 2.8em;
-            color: #3498db;
-        }
-
-        h1 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 2.8em;
-            color: #ecf0f1;
-            margin: 0;
-            font-weight: 600;
-        }
-
-        .main-content {
-            width: 95%;
-            max-width: 1200px;
-            margin: 50px auto;
-            background-color: #2f4356;
-            border-radius: 20px;
-            padding: 50px;
-            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.35);
-            flex-grow: 1;
-            position: relative;
-        }
-
-        h2 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 2.4em;
-            color: #3498db;
-            margin-bottom: 35px;
-            text-align: center;
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 18px;
-            margin-top: 0;
-            font-weight: 600;
-        }
-
-        h3 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.6em;
-            font-weight: 500;
-        }
-
-        .video-section,
-        .form-section {
-            margin-bottom: 50px;
-        }
-
-        #video-container {
-            background-color: #34495e;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-            text-align: center;
-            position: relative;
-        }
-
-        #video-feed {
-            width: 100%;
-            border-radius: 12px;
-            border: 4px solid #3498db;
-            display: block;
-            margin: 0 auto;
-            max-height: 600px;
-        }
-
-        video {
-            width: 100%;
-            margin-top: 25px;
-            border-radius: 12px;
-            border: 4px solid #3498db;
-            display: block;
-            margin: 25px auto 0;
-            max-height: 600px;
-        }
-
-        .controls {
-            text-align: center;
-            margin-top: 35px;
-        }
-
-        button,
-        input[type="file"],
-        select {
-            background-color: #3498db;
-            color: #fff;
-            border: none;
-            padding: 15px 35px;
-            margin: 12px;
-            border-radius: 12px;
-            font-size: 16px;
-            font-family: 'Inter', sans-serif;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-            font-weight: 500;
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
-        }
-
-        button:hover,
-        input[type="file"]:hover,
-        select:hover {
-            background-color: #5dade2;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        input[type="text"] {
-            padding: 14px;
-            border-radius: 10px;
-            border: 1px solid #7f8c8d;
-            width: 100%;
-            max-width: 450px;
-            margin: 12px auto;
-            display: block;
-            background-color: #ecf0f1;
-            color: #2f4356;
-            font-size: 16px;
-            font-family: 'Inter', sans-serif;
-        }
-
-        input[type="file"] {
-            display: block;
-            margin: 25px auto;
-            padding: 15px;
-        }
-
-        select {
-            width: 100%;
-            max-width: 450px;
-            display: block;
-            margin: 12px auto;
-            padding: 14px;
-            font-size: 16px;
-            border: 1px solid #7f8c8d;
-            border-radius: 10px;
-            background-color: #ecf0f1;
-            color: #2f4356;
-            font-family: 'Inter', sans-serif;
-            appearance: none;
-            background-image: url('data:image/svg+xml;utf8,<svg fill="%232f4356" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
-            background-repeat: no-repeat;
-            background-position-x: 95%;
-            background-position-y: 50%;
-        }
-
-        select::-ms-expand {
-            display: none;
-        }
-
-        footer {
-            text-align: center;
-            padding: 30px;
-            background-color: #34495e;
-            color: #ecf0f1;
-            font-size: 16px;
-            margin-top: auto;
-            box-shadow: 0 -3px 8px rgba(0, 0, 0, 0.15);
-        }
-
-        footer a {
-            color: #5dade2;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        footer a:hover {
-            color: #3498db;
-        }
-
-        .bottom-nav {
-            position: absolute;
-            bottom: 25px;
-            right: 35px;
-        }
-
-        .bottom-nav a {
-            color: #ecf0f1;
-            text-decoration: none;
-            padding: 12px 18px;
-            border-radius: 10px;
-            background-color: #3498db;
-            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
-            font-size: 16px;
-            font-family: 'Inter', sans-serif;
-            font-weight: 500;
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
-        }
-
-        .bottom-nav a:hover {
-            background-color: #5dade2;
-            color: #fff;
-            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        .alert {
-            display: none;
-            position: absolute;
-            top: 25px;
-            left: 25px;
-            background: linear-gradient(135deg, #e74c3c, #c0392b);
-            color: #fff;
-            padding: 18px 25px;
-            border-radius: 10px;
-            border: 2px solid #3498db;
-            font-size: 16px;
-            font-family: 'Inter', sans-serif;
-            font-weight: 500;
-            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.3);
-            z-index: 1000;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .alert.show {
-            display: block;
-            opacity: 1;
-        }
-
-        /* Toggle Switch Styling */
-        .toggle-switch {
-            display: inline-block;
-            position: relative;
-            width: 60px;
-            height: 34px;
-            margin: 12px;
-        }
-
-        .toggle-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #7f8c8d;
-            transition: 0.3s;
-            border-radius: 34px;
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 26px;
-            width: 26px;
-            left: 4px;
-            bottom: 4px;
-            background-color: #ecf0f1;
-            transition: 0.3s;
-            border-radius: 50%;
-        }
-
-        input:checked + .slider {
-            background-color: #3498db;
-        }
-
-        input:checked + .slider:before {
-            transform: translateX(26px);
-        }
-
-        .toggle-label {
-            margin-left: 12px;
-            font-size: 16px;
-            vertical-align: middle;
-            font-family: 'Inter', sans-serif;
-        }
-
-        @media (max-width: 768px) {
-            header {
-                padding: 25px;
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-            }
-
-            .bottom-nav {
-                position: static;
-                margin-top: 20px;
-                bottom: auto;
-                right: auto;
-                left: auto;
-            }
-
-            .bottom-nav a {
-                display: block;
-                margin: 12px 0;
-            }
-
-            .logo-container {
-                margin-bottom: 12px;
-            }
-
-            .logo-icon {
-                font-size: 2.2em;
-            }
-
-            h1 {
-                font-size: 2.2em;
-            }
-
-            .main-content {
-                width: 98%;
-                padding: 35px;
-                margin-top: 35px;
-                margin-bottom: 35px;
-            }
-
-            h2 {
-                font-size: 2em;
-                margin-bottom: 30px;
-                padding-bottom: 12px;
-            }
-
-            button,
-            input[type="file"],
-            select {
-                padding: 12px 30px;
-                font-size: 15px;
-                margin: 10px;
-            }
-
-            input[type="text"] {
-                max-width: 100%;
-            }
-
-            select {
-                max-width: 100%;
-            }
-
-            .alert {
-                top: 12px;
-                left: 12px;
-                right: 12px;
-                font-size: 15px;
-                padding: 12px 18px;
-            }
-        }
-
-        /* Added for upload status */
-        #upload-status {
-            color: #3498db;
-            margin-top: 12px;
-            font-size: 16px;
-            text-align: center;
-            font-family: 'Inter', sans-serif;
-        }
-    </style>
 </head>
 <body>
     <header>
@@ -412,14 +27,21 @@
                 <div id="violation-alert" class="alert">
                     <i class="fa-solid fa-exclamation-triangle"></i> PPE Violation Detected: Missing Hardhat, Mask, or Safety Vest
                 </div>
-                <img id="video-feed" src="{{ url_for('video_feed') }}" alt="Live Stream"/>
+                <img id="video-feed" src="{{ url_for('video_feed') }}" alt="Live Stream" style="display: {{ 'block' if current_source_type != 'mobile' else 'none' }};"/>
+                <video id="mobile-video" autoplay playsinline style="display: {{ 'block' if current_source_type == 'mobile' else 'none' }};"></video>
             </div>
             <div class="controls">
-                <label class="toggle-switch">
-                    <input type="checkbox" id="webcam-toggle" {% if webcam_active %}checked{% endif %}>
-                    <span class="slider"></span>
-                </label>
-                <span class="toggle-label">Webcam: <span id="toggle-status">{{ 'On' if webcam_active else 'Off' }}</span></span>
+                <div id="webcam-controls" style="display: {{ 'block' if current_source_type == 'webcam' else 'none' }};">
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="webcam-toggle" {% if webcam_active %}checked{% endif %}>
+                        <span class="slider"></span>
+                    </label>
+                    <span class="toggle-label">Webcam: <span id="toggle-status">{{ 'On' if webcam_active else 'Off' }}</span></span>
+                </div>
+                <div id="mobile-controls" style="display: {{ 'block' if current_source_type == 'mobile' else 'none' }};">
+                    <button id="mobile-toggle"><i class="fa-solid fa-camera"></i> {{ 'Stop Mobile Camera' if mobile_camera_active else 'Start Mobile Camera' }}</button>
+                    <button id="switch-camera"><i class="fa-solid fa-sync-alt"></i> Switch to {{ 'Back' if mobile_facing_mode == 'user' else 'Front' }} Camera</button>
+                </div>
             </div>
         </section>
 
@@ -428,13 +50,24 @@
             <form id="source-form" enctype="multipart/form-data">
                 <select name="source_type" id="source-select">
                     <option value="webcam" {% if current_source_type == 'webcam' %}selected{% endif %}>Webcam</option>
+                    <option value="mobile" {% if current_source_type == 'mobile' %}selected{% endif %}>Mobile Camera</option>
                     <option value="cctv" {% if current_source_type == 'cctv' %}selected{% endif %}>CCTV Stream</option>
                     <option value="uploaded" {% if current_source_type == 'uploaded' %}selected{% endif %}>Upload Video</option>
                 </select>
-                <input type="text" name="cctv_url" placeholder="Enter CCTV Stream URL" style="display: {% if current_source_type == 'cctv' %}block{% else %}none{% endif %};" value="{{ video_source if current_source_type == 'cctv' else '' }}">
-                <input type="file" name="video" accept="video/mp4,video/avi,video/mov" style="display: {% if current_source_type == 'uploaded' %}block{% else %}none{% endif %};">
+                <input type="text" name="cctv_url" placeholder="Enter CCTV Stream URL" style="display: {{ 'block' if current_source_type == 'cctv' else 'none' }};" value="{{ video_source if current_source_type == 'cctv' else '' }}">
+                <input type="file" name="video" accept="video/mp4,video/avi,video/mov" style="display: {{ 'block' if current_source_type == 'uploaded' else 'none' }};">
                 <button type="submit"><i class="fa-solid fa-check-circle"></i> Apply Source</button>
                 <p id="upload-status"></p>
+            </form>
+        </section>
+
+        <section class="email-section">
+            <h2><i class="fa-solid fa-envelope"></i> Configure Alert Recipients</h2>
+            <form id="email-form">
+                <input type="text" id="email-input" placeholder="Enter email addresses (comma-separated)" required>
+                <button type="submit"><i class="fa-solid fa-check-circle"></i> Update Recipients</button>
+                <p id="email-status"></p>
+                <p>Current recipients: <span id="current-recipients">{{ ', '.join(EMAIL_RECIPIENTS) }}</span></p>
             </form>
         </section>
     </main>
@@ -444,55 +77,213 @@
     </footer>
 
     <script>
-        // Toggle Webcam
         const toggle = document.getElementById('webcam-toggle');
         const toggleStatus = document.getElementById('toggle-status');
         const videoFeed = document.getElementById('video-feed');
+        const mobileVideo = document.getElementById('mobile-video');
         const sourceForm = document.getElementById('source-form');
         const sourceSelect = document.getElementById('source-select');
         const cctvInput = document.querySelector('input[name="cctv_url"]');
         const videoInput = document.querySelector('input[name="video"]');
         const uploadStatus = document.getElementById('upload-status');
+        const webcamControls = document.getElementById('webcam-controls');
+        const mobileControls = document.getElementById('mobile-controls');
+        const mobileToggle = document.getElementById('mobile-toggle');
+        const switchCamera = document.getElementById('switch-camera');
+        const emailForm = document.getElementById('email-form');
+        const emailInput = document.getElementById('email-input');
+        const emailStatus = document.getElementById('email-status');
+        const currentRecipients = document.getElementById('current-recipients');
+        let stream = null;
+        let mobileCameraActive = {{ 'true' if mobile_camera_active else 'false' }};
+        let facingMode = '{{ mobile_facing_mode }}';
+
+        async function toggleCamera(sourceType, active) {
+            console.log(`Toggling ${sourceType} to ${active}`);
+            try {
+                const response = await fetch('/toggle_webcam', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ active, source_type: sourceType })
+                });
+                const data = await response.json();
+                console.log('Toggle response:', data);
+                if (data.status !== 'success') {
+                    throw new Error(data.message || 'Failed to toggle camera');
+                }
+                return data;
+            } catch (error) {
+                console.error(`Error toggling ${sourceType} camera:`, error);
+                uploadStatus.textContent = `Error: ${error.message}`;
+                uploadStatus.style.color = '#e74c3c';
+                throw error;
+            }
+        }
 
         toggle.addEventListener('change', async () => {
             const active = toggle.checked;
             toggleStatus.textContent = active ? 'On' : 'Off';
             try {
-                const response = await fetch('/toggle_webcam', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ active })
-                });
-                const data = await response.json();
+                const data = await toggleCamera('webcam', active);
                 if (data.status === 'success') {
                     videoFeed.src = '{{ url_for('video_feed') }}?' + new Date().getTime();
-                } else {
-                    toggle.checked = !active;
-                    toggleStatus.textContent = active ? 'Off' : 'On';
-                    uploadStatus.textContent = `Error: ${data.message}`;
-                    uploadStatus.style.color = '#e74c3c';
+                    mobileCameraActive = data.mobile_camera_active;
+                    console.log(`Webcam toggled ${active ? 'ON' : 'OFF'}, source_type: ${data.source_type}`);
                 }
             } catch (error) {
-                console.error('Error toggling webcam:', error);
                 toggle.checked = !active;
                 toggleStatus.textContent = active ? 'Off' : 'On';
-                uploadStatus.textContent = 'Error toggling webcam';
-                uploadStatus.style.color = '#e74c3c';
+                console.error('Reverting webcam toggle due to error');
             }
         });
 
-        // Source Form Handling
-        sourceSelect.addEventListener('change', () => {
+        mobileToggle.addEventListener('click', async () => {
+            console.log(`Mobile camera button clicked, current state: ${mobileCameraActive}`);
+            if (mobileCameraActive) {
+                stopMobileCamera();
+                mobileCameraActive = false;
+                mobileToggle.innerHTML = '<i class="fa-solid fa-camera"></i> Start Mobile Camera';
+                try {
+                    await toggleCamera('mobile', false);
+                    console.log('Mobile camera stopped');
+                } catch (error) {
+                    console.error('Error stopping mobile camera:', error);
+                }
+                return;
+            }
+            try {
+                // Ensure source is set to mobile
+                if (sourceSelect.value !== 'mobile') {
+                    console.log('Switching source to mobile');
+                    sourceSelect.value = 'mobile';
+                    sourceSelect.dispatchEvent(new Event('change'));
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                }
+                // Toggle mobile camera on server
+                await toggleCamera('mobile', true);
+                console.log(`Requesting camera with facingMode: ${facingMode}`);
+                stream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: facingMode, width: { ideal: 640 }, height: { ideal: 480 } },
+                    audio: false
+                });
+                mobileVideo.srcObject = stream;
+                mobileVideo.onloadedmetadata = () => {
+                    mobileCameraActive = true;
+                    mobileToggle.innerHTML = '<i class="fa-solid fa-camera"></i> Stop Mobile Camera';
+                    console.log('Mobile camera started, sending frames');
+                    sendMobileFrames();
+                };
+            } catch (error) {
+                console.error('Error starting mobile camera:', error);
+                uploadStatus.textContent = 'Failed to access mobile camera. Ensure permissions are granted.';
+                uploadStatus.style.color = '#e74c3c';
+                stopMobileCamera();
+                mobileCameraActive = false;
+                mobileToggle.innerHTML = '<i class="fa-solid fa-camera"></i> Start Mobile Camera';
+            }
+        });
+
+        switchCamera.addEventListener('click', async () => {
+            facingMode = facingMode === 'user' ? 'environment' : 'user';
+            switchCamera.innerHTML = `<i class="fa-solid fa-sync-alt"></i> Switch to ${facingMode === 'user' ? 'Back' : 'Front'} Camera`;
+            console.log(`Switching camera to ${facingMode}`);
+            if (mobileCameraActive) {
+                stopMobileCamera();
+                try {
+                    stream = await navigator.mediaDevices.getUserMedia({
+                        video: { facingMode: facingMode, width: { ideal: 640 }, height: { ideal: 480 } },
+                        audio: false
+                    });
+                    mobileVideo.srcObject = stream;
+                    mobileVideo.onloadedmetadata = () => {
+                        mobileCameraActive = true;
+                        console.log('Camera switched, sending frames');
+                        sendMobileFrames();
+                    };
+                } catch (error) {
+                    console.error('Error switching camera:', error);
+                    uploadStatus.textContent = 'Failed to switch camera.';
+                    uploadStatus.style.color = '#e74c3c';
+                    mobileCameraActive = false;
+                    mobileToggle.innerHTML = '<i class="fa-solid fa-camera"></i> Start Mobile Camera';
+                }
+            }
+        });
+
+        function stopMobileCamera() {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                mobileVideo.srcObject = null;
+                stream = null;
+                console.log('Mobile camera stream stopped');
+            }
+        }
+
+        function sendMobileFrames() {
+            const canvas = document.createElement('canvas');
+            canvas.width = mobileVideo.videoWidth || 640;
+            canvas.height = mobileVideo.videoHeight || 480;
+            const ctx = canvas.getContext('2d');
+            async function sendFrame() {
+                if (!mobileCameraActive || !mobileVideo.srcObject) {
+                    console.log('Mobile camera inactive or no stream, stopping frame sending');
+                    return;
+                }
+                try {
+                    console.log('Capturing mobile frame');
+                    ctx.drawImage(mobileVideo, 0, 0, canvas.width, canvas.height);
+                    const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+                    if (!dataUrl.startsWith('data:image/jpeg;base64,')) {
+                        console.error('Invalid data URL format');
+                        uploadStatus.textContent = 'Error capturing frame';
+                        uploadStatus.style.color = '#e74c3c';
+                        return;
+                    }
+                    console.log('Sending mobile frame to server');
+                    const response = await fetch('/process_mobile_frame', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ frame: dataUrl })
+                    });
+                    const result = await response.json();
+                    if (result.status === 'success' && result.processed_frame) {
+                        console.log('Received processed frame from server');
+                        videoFeed.src = result.processed_frame;
+                    } else {
+                        console.error('Error processing frame:', result.message);
+                        uploadStatus.textContent = `Error: ${result.message}`;
+                        uploadStatus.style.color = '#e74c3c';
+                    }
+                } catch (error) {
+                    console.error('Error sending frame:', error);
+                    uploadStatus.textContent = 'Error processing mobile frame';
+                    uploadStatus.style.color = '#e74c3c';
+                }
+                setTimeout(sendFrame, 33);
+            }
+            sendFrame();
+        }
+
+        sourceSelect.addEventListener('change', async () => {
+            console.log(`Source selected: ${sourceSelect.value}`);
             cctvInput.style.display = sourceSelect.value === 'cctv' ? 'block' : 'none';
             videoInput.style.display = sourceSelect.value === 'uploaded' ? 'block' : 'none';
-            if (sourceSelect.value === 'webcam') {
+            webcamControls.style.display = sourceSelect.value === 'webcam' ? 'block' : 'none';
+            mobileControls.style.display = sourceSelect.value === 'mobile' ? 'block' : 'none';
+            videoFeed.style.display = sourceSelect.value !== 'mobile' ? 'block' : 'none';
+            mobileVideo.style.display = sourceSelect.value === 'mobile' ? 'block' : 'none';
+            if (sourceSelect.value === 'webcam' || sourceSelect.value === 'mobile') {
                 toggle.checked = false;
                 toggleStatus.textContent = 'Off';
-                fetch('/toggle_webcam', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ active: false })
-                });
+                stopMobileCamera();
+                mobileCameraActive = false;
+                mobileToggle.innerHTML = '<i class="fa-solid fa-camera"></i> Start Mobile Camera';
+                try {
+                    await toggleCamera(sourceSelect.value, false);
+                    console.log(`Source changed to ${sourceSelect.value}, camera toggled off`);
+                } catch (error) {
+                    console.error('Error changing source:', error);
+                }
             }
             uploadStatus.textContent = '';
         });
@@ -501,16 +292,17 @@
             e.preventDefault();
             const formData = new FormData(sourceForm);
             const sourceType = formData.get('source_type');
+            console.log(`Submitting source form: ${sourceType}`);
             const url = sourceType === 'uploaded' ? '/upload' : '/change_source';
             uploadStatus.textContent = sourceType === 'uploaded' ? 'Uploading...' : 'Changing source...';
             uploadStatus.style.color = '#3498db';
-
             try {
                 const response = await fetch(url, {
                     method: 'POST',
                     body: formData
                 });
                 const data = await response.json();
+                console.log('Source change response:', data);
                 if (data.status === 'success') {
                     uploadStatus.textContent = sourceType === 'uploaded' ? 'Video uploaded successfully!' : 'Source changed successfully!';
                     uploadStatus.style.color = '#2ecc71';
@@ -527,11 +319,41 @@
             }
         });
 
-        // Poll Violation Status
+        emailForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const emails = emailInput.value.split(',').map(email => email.trim()).filter(email => email);
+            console.log('Updating email recipients:', emails);
+            emailStatus.textContent = 'Updating recipients...';
+            emailStatus.style.color = '#3498db';
+            try {
+                const response = await fetch('/update_recipients', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ recipients: emails })
+                });
+                const data = await response.json();
+                console.log('Update recipients response:', data);
+                if (data.status === 'success') {
+                    emailStatus.textContent = 'Recipients updated successfully!';
+                    emailStatus.style.color = '#2ecc71';
+                    currentRecipients.textContent = data.recipients.join(', ');
+                    emailInput.value = '';
+                } else {
+                    emailStatus.textContent = `Error: ${data.message}`;
+                    emailStatus.style.color = '#e74c3c';
+                }
+            } catch (error) {
+                console.error('Error updating recipients:', error);
+                emailStatus.textContent = `Error: ${error.message}`;
+                emailStatus.style.color = '#e74c3c';
+            }
+        });
+
         function checkViolationStatus() {
             fetch('/violation_status')
                 .then(response => response.json())
                 .then(data => {
+                    console.log('Violation status:', data);
                     const alert = document.getElementById('violation-alert');
                     if (data.violation) {
                         alert.classList.add('show');
@@ -544,10 +366,24 @@
 
         setInterval(checkViolationStatus, 1000);
 
-        // Initialize form display
         window.onload = () => {
+            console.log('Page loaded, initializing UI');
             cctvInput.style.display = '{{ current_source_type }}' === 'cctv' ? 'block' : 'none';
             videoInput.style.display = '{{ current_source_type }}' === 'uploaded' ? 'block' : 'none';
+            webcamControls.style.display = '{{ current_source_type }}' === 'webcam' ? 'block' : 'none';
+            mobileControls.style.display = '{{ current_source_type }}' === 'mobile' ? 'block' : 'none';
+            videoFeed.style.display = '{{ current_source_type }}' !== 'mobile' ? 'block' : 'none';
+            mobileVideo.style.display = '{{ current_source_type }}' === 'mobile' ? 'block' : 'none';
+            // Fetch current recipients on load
+            fetch('/get_recipients')
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Current recipients:', data);
+                    if (data.status === 'success') {
+                        currentRecipients.textContent = data.recipients.join(', ');
+                    }
+                })
+                .catch(error => console.error('Error fetching recipients:', error));
         };
     </script>
 </body>
