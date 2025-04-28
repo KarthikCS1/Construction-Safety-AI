@@ -51,6 +51,8 @@ The system follows a modular architecture:
    - Configured with `credentials.json` and `token.pickle` for authentication.
 
 **Architecture Diagram**:
+
+https://github.com/KarthikCS1/Construction-Safety-AI/blob/main/system%20architecture.png
 ```
 [Video Source: Webcam/CCTV/Upload] --> [Flask Backend: Video Processing]
        |                                    |
