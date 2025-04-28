@@ -57,7 +57,7 @@ The system follows a modular architecture:
 ![system architecture](https://github.com/user-attachments/assets/380f79d7-7d30-477d-b614-95dee976d07c)
 
 
-```
+
 
 ## Features
 - **Real-Time Detection**: Identifies PPE violations using YOLOv11.
@@ -107,7 +107,7 @@ Team members and their contributions:
 ## Installation
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/<your-username>/ppe-detection-app.git
+   git clone https://github.com/<your-username/construction0-safety-ai.git
    cd ppe-detection-app
    ```
 
@@ -163,7 +163,7 @@ Team members and their contributions:
    - Open `http://127.0.0.1:8080` in a browser.
    - Upload a video, toggle the webcam, or enter a CCTV URL.
    - View live detections in the `#video-feed` section.
-   - Check `myselfkarthik1@gmail.com` for violation alerts.
+   - Check `your@gmail.com` for violation alerts.
 
 3. **Test Email Functionality**:
    ```bash
