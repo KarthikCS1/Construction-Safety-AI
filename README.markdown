@@ -51,6 +51,8 @@ The system follows a modular architecture:
    - Configured with `credentials.json` and `token.pickle` for authentication.
 
 **Architecture Diagram**:
+
+
 ![system architecture](https://github.com/user-attachments/assets/380f79d7-7d30-477d-b614-95dee976d07c)
 
 
