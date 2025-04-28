@@ -1,6 +1,7 @@
 # Construction Safety AI
 
-![Construction Safety AI](static/placeholder.jpg)
+![Screenshot 2025-04-28 210653](https://github.com/user-attachments/assets/08c6b47f-556d-48a1-86c3-5737473be00b)
+
 
 Construction Safety AI is an advanced system designed to enhance workplace safety on construction sites by detecting Personal Protective Equipment (PPE) violations in real-time. Utilizing the state-of-the-art **YOLOv11** model, the system identifies missing PPE (hardhats, masks, safety vests) and sends instant email alerts via Gmail API. Built with a **Flask-based frontend and backend**, it supports video uploads, live webcam detection, and CCTV stream processing, ensuring robust safety compliance monitoring.
 
